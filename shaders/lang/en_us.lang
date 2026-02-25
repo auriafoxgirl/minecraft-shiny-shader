@@ -1,0 +1,8 @@
+value.ADD_REFLECTION_MODE.0=vertex
+value.ADD_REFLECTION_MODE.1=fragment
+value.ADD_REFLECTION_MODE.2=composite
+
+value.MIRROR_BLOCK.-1=off
+value.MIRROR_BLOCK.20=amethyst_block
+value.MIRROR_BLOCK.21=iron_block
+value.MIRROR_BLOCK.22=sea_lantern
