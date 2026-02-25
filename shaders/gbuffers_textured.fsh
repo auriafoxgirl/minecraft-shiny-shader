@@ -136,5 +136,7 @@ void main() {
 		);
 		#endif
 	}
+	#else
+	reflectionPixelData.r = isCurrentReflection;
 	#endif
 }
