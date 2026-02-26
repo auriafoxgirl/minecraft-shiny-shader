@@ -89,7 +89,7 @@ void main() {
 		float porosity = 0.0;
 		if (blueInt <= 64.0) {
 			porosity = specularData.b * wetness * 2.0; // * 4.0
-			porosity *= lmcoord.y;
+			porosity *= max(lmcoord.y * 11.0 - 10.0, 0.0);
 		}
 		if (blockId == 5) {
 			reflectionStrength *= 0.75;
