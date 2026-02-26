@@ -11,4 +11,6 @@ const float REFLECTIONS_DATA_SIZE = 16.0;
 
 #define REFLECTION_PIORITY
 
+// #define SHARP_REPROJECTION
+
 // #define HIDE_GUI_TO_PAUSE

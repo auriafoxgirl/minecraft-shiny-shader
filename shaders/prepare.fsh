@@ -15,6 +15,11 @@ uniform vec3 cameraPositionDiff;
 
 in vec2 texcoord;
 
+#include "/lib/settings.glsl"
+
+uniform float viewWidth;
+uniform float viewHeight;
+
 vec3 projectAndDivide(mat4 projMat, vec3 pos) {
 	vec4 homogeneousPos = projMat * vec4(pos, 1.0);
 	return homogeneousPos.xyz / homogeneousPos.w;
@@ -72,7 +77,13 @@ void main() {
 		}
 	}
 
+	#ifdef SHARP_REPROJECTION
+	ivec2 uv = ivec2(myScreenPos.xy * vec2(viewWidth, viewHeight));
+	uv.x = clamp(uv.x, 0, int(viewWidth) - 1);
+	uv.y = clamp(uv.y, 0, int(viewHeight) - 1);
+	color = texelFetch(colortex4, uv, 0);
+	#else
 	color = texture2D(colortex4, myScreenPos.xy);
-	// color.rgb = vec3(color.a);
+	#endif
 	depthOutput = texture2D(colortex3, myScreenPos.xy);
 }
