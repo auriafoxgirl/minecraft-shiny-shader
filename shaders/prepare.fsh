@@ -48,9 +48,12 @@ void main() {
 
 	float stepSize = 0.05;
 	float stepIncrease = 1.25;
+	
+	float dist = 0.0;
 
 	for (int i = 0; i < 32; i++) {
-		pos += dir * stepSize;
+		dist += stepSize;
+		pos = dir * dist;
 		stepSize *= stepIncrease;
 		stepIncrease *= 1.01;
 		vec3 myView = eyeToOldViewPos(pos);
@@ -63,10 +66,12 @@ void main() {
 		}
 	}
 
+	dist -= stepSize;
 	pos -= dir * stepSize;
 	for (int i = 0; i < 6; i++) {
 		stepSize *= 0.5;
-		pos += dir * stepSize;
+		dist += stepSize;
+		pos = dir * dist;
 		vec3 myView = eyeToOldViewPos(pos);
 		if (myView.z < 0.0) {
 			myScreenPos = oldViewToOldScreenPos(myView);
