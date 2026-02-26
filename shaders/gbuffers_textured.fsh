@@ -62,13 +62,14 @@ void main() {
 		color.a = max(color.a, 0.25);
 	}
 	#endif
-	reflectionPixelData = vec4(0.0, 0.0, 0.0, color.a);
+	reflectionPixelData = vec4(0.0, 0.0, 0.0, 0.0);
 	#if ADD_REFLECTION_MODE == 2
 	reflectionDataCulled = vec4(0.0, 0.0, 0.0, color.a > 0.99 ? 1.0 : 0.0);
 	#endif
 	if (color.a < alphaTestRef) {
 		discard;
 	}
+	reflectionPixelData.a = 1.0;
 
 	vec2 fragcoord = gl_FragCoord.xy / vec2(viewWidth, viewHeight);
 	vec3 reflectionColor;
