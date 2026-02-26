@@ -48,7 +48,7 @@ void main() {
 
 	float stepSize = 0.05;
 	float stepIncrease = 1.25;
-	
+
 	float dist = 0.0;
 
 	for (int i = 0; i < 32; i++) {
