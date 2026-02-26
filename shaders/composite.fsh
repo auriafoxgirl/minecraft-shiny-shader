@@ -30,7 +30,7 @@ float rand4(vec4 co){
 }
 
 vec2 generateReflectionsDataUv(vec4 id) {
-	return vec2(rand4(id + randUvOffset), rand4(id + 3.0 + randUvOffset));
+	return vec2(rand4(id + randUvOffset), rand4(id + vec4(3.0, 0.0, 0.0, 0.0) + randUvOffset));
 }
 
 ivec2 generateReflectionsDataUvTexel(vec4 id) {
@@ -95,9 +95,13 @@ void main() {
 			normal.z = -normal.z;
 		}
 		normal = normalize(normal);
+		vec4 id = vec4(normal, data.z);
+		#ifdef REFLECTION_PIORITY
+		id.yz += floor(texcoord.xy * 4.0);
+		#endif
 		imageStore(
 			allReflectionsDataImage,
-			generateReflectionsDataUvTexel(vec4(normal, data.z)),
+			generateReflectionsDataUvTexel(id),
 			vec4(normal + 2.0, data.z)
 		);
 	}

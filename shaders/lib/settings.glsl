@@ -9,4 +9,6 @@ const float REFLECTIONS_DATA_SIZE = 16.0;
 
 #define MIRROR_BLOCK 20 // [-1 20 21 22]
 
+#define REFLECTION_PIORITY
+
 // #define HIDE_GUI_TO_PAUSE
