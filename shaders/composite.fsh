@@ -41,8 +41,9 @@ void main() {
 		);
 		color.a = 1.0;
 	} else {
-		vec2 step = vec2(8.5) / vec2(viewWidth, viewHeight);
+		vec2 step = vec2(1.0) / vec2(viewWidth, viewHeight);
 		vec2 dir = vec2(1.0, 0.0);
+		dir *= mix(35.5, 1.5, texture2D(colortex4, texcoord + dir * step).a);
 		color.xyz = vec3(0.0);
 		float sum = 0.00001;
 		float maxWeight = 0.0;
