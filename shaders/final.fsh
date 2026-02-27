@@ -40,7 +40,11 @@ void main() {
 			color = texture2D(shadowcolor0, miniUv);
 		} else if (miniPos.y == 2) {
 			if (miniUv.x > 0.5) {
-				color.xyz = vec3(texture2D(colortex3, miniUv).r * 0.25);
+				float depth = texture2D(colortex3, miniUv).r;
+				depth *= depth;
+				depth *= depth;
+				depth *= depth;
+				color.xyz = vec3(depth);
 			} else {
 				color = texture2D(colortex4, miniUv);
 			}

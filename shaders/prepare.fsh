@@ -6,7 +6,9 @@ uniform sampler2D colortex1; // reflection data
 uniform sampler2D colortex3; // all reflections depth
 uniform sampler2D colortex4; // all reflections rendered
 
+uniform mat4 gbufferProjection;
 uniform mat4 gbufferProjectionInverse;
+uniform mat4 gbufferModelView;
 uniform mat4 gbufferModelViewInverse;
 uniform mat4 gbufferPreviousProjection;
 uniform mat4 gbufferPreviousModelView;
@@ -63,14 +65,13 @@ void main() {
 			myScreenPos = oldViewToOldScreenPos(myView);
 			float myDepth = texture2D(colortex3, myScreenPos.xy).r;
 			if (myDepth < myScreenPos.z) {
+				dist -= stepSize;
 				break;
 			}
 		}
 	}
 
-	dist -= stepSize;
-	pos -= dir * stepSize;
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 16; i++) {
 		stepSize *= 0.5;
 		dist += stepSize;
 		pos = dir * dist;
@@ -79,7 +80,7 @@ void main() {
 			myScreenPos = oldViewToOldScreenPos(myView);
 			float myDepth = texture2D(colortex3, myScreenPos.xy).r;
 			if (myDepth < myScreenPos.z) { // inside
-				pos -= dir * stepSize;
+				dist -= stepSize;
 			}
 		}
 	}
@@ -92,5 +93,8 @@ void main() {
 	#else
 	color = texture2D(colortex4, myScreenPos.xy);
 	#endif
-	depthOutput = texture2D(colortex3, myScreenPos.xy);
+
+	vec3 myView = mat3(gbufferModelView) * pos;
+	float depth = projectAndDivide(gbufferProjection, myView).z * 0.5 + 0.5;
+	depthOutput = vec4(depth, 0.0, 0.0, 1.0);
 }
