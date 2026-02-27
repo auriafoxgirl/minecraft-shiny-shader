@@ -1,14 +1,16 @@
 #version 430 compatibility
 
-layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
-const ivec3 workGroups = ivec3(1, 1, 1);
-
-layout (rgba16f) uniform image2D allReflectionsDataImage;
-layout (rgba16f) uniform image2D reflectionDataImage;
-
-uniform int currentReflectionPos;
+// 16 * 1 = 16
+layout (local_size_x = 16) in;
+const ivec3 workGroups = ivec3(16, 1, 1);
 
 #include "/lib/settings.glsl"
+
+#ifdef REFLECTION_32F_PRECISION
+layout (rgba32f) uniform image2D allReflectionsDataImage;
+#else
+layout (rgba16f) uniform image2D allReflectionsDataImage;
+#endif
 
 const int REFLECTIONS_DATA_SIZE_INT = int(REFLECTIONS_DATA_SIZE);
 const float REFLECTIONS_DATA_SIZE_SQUARE = REFLECTIONS_DATA_SIZE * REFLECTIONS_DATA_SIZE;
@@ -21,15 +23,17 @@ ivec2 posToUv(int p) {
 }
 
 void main() {
-	ivec2 uv = posToUv(currentReflectionPos);
-	vec4 color = imageLoad(allReflectionsDataImage, uv);
-	if (color.r < 0.5) {
-		imageStore(reflectionDataImage, ivec2(0, 0), vec4(0.0, 1.0, 0.0, 1.0));
+   int pos = int(gl_GlobalInvocationID.x);
+	ivec2 myUv = posToUv(pos);
+	vec4 color = imageLoad(allReflectionsDataImage, myUv);
+	if (color.r > 0.5) {
 		return;
 	}
-	color.xyz -= 2.0;
-	#ifdef ROUND_NORMALS
-	color.xyz = floor(color.xyz * 100.0 + 0.25) * 0.01;
-	#endif
-	imageStore(reflectionDataImage, ivec2(0, 0), vec4(color.xyz, color.w));
+	for (int i = 1; i <= 4; i++) {
+		color = imageLoad(allReflectionsDataImage, posToUv(pos + i * 64));
+		if (color.r > 0.5) {
+			imageStore(allReflectionsDataImage, myUv, color);
+			break;
+		}
+	}
 }

@@ -11,15 +11,20 @@ out float blockIdFloat;
 
 in vec2 mc_Entity;
 
+#include "/lib/settings.glsl"
+
+#ifdef REFLECTION_32F_PRECISION
+layout (rgba32f) uniform image2D allReflectionsDataImage;
+layout (rgba32f) uniform image2D reflectionDataImage;
+#else
 layout (rgba16f) uniform image2D allReflectionsDataImage;
 layout (rgba16f) uniform image2D reflectionDataImage;
+#endif
 
 uniform mat4 gbufferProjectionInverse;
 uniform mat4 gbufferModelViewInverse;
 
 uniform float randUvOffset;
-
-#include "/lib/settings.glsl"
 
 float rand3(vec3 co) {
     return fract(sin(dot(co, vec3(12.9898, 78.233, 19.943))) * 43758.5453);

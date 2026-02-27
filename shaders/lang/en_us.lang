@@ -6,3 +6,5 @@ value.MIRROR_BLOCK.-1=off
 value.MIRROR_BLOCK.20=amethyst_block
 value.MIRROR_BLOCK.21=iron_block
 value.MIRROR_BLOCK.22=sea_lantern
+
+value.REFLECTION_PIORITY.1=off

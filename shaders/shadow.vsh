@@ -15,11 +15,15 @@ uniform vec3 cameraPositionDiff;
 
 uniform int renderStage;
 
+#include "/lib/settings.glsl"
+
+#ifdef REFLECTION_32F_PRECISION
+layout (rgba32f) uniform image2D reflectionDataImage;
+#else
 layout (rgba16f) uniform image2D reflectionDataImage;
+#endif
 
 in vec2 mc_Entity;
-
-#include "/lib/settings.glsl"
 
 void main() {
 	vec4 reflectionData = imageLoad(reflectionDataImage, ivec2(0, 0));

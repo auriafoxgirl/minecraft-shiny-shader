@@ -32,8 +32,15 @@ uniform float wetness;
 in vec4 myReflectData;
 in vec2 reflectDataUv;
 #endif
+
 #if ADD_REFLECTION_MODE == 1
+
+#ifdef REFLECTION_32F_PRECISION
+layout (rgba32f) uniform image2D allReflectionsDataImage;
+#else
 layout (rgba16f) uniform image2D allReflectionsDataImage;
+#endif
+
 #endif
 
 #if ADD_REFLECTION_MODE == 2

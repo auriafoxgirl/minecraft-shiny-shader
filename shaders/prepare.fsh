@@ -25,6 +25,8 @@ vec3 projectAndDivide(mat4 projMat, vec3 pos) {
 	return homogeneousPos.xyz / homogeneousPos.w;
 }
 
+const float ALL_REFLECTIONS_SCALE_FLOAT = float(ALL_REFLECTIONS_SCALE);
+
 /* RENDERTARGETS: 4,3 */
 layout(location = 0) out vec4 color;
 layout(location = 1) out vec4 depthOutput;
@@ -83,9 +85,9 @@ void main() {
 	}
 
 	#ifdef SHARP_REPROJECTION
-	ivec2 uv = ivec2(myScreenPos.xy * vec2(viewWidth, viewHeight));
-	uv.x = clamp(uv.x, 0, int(viewWidth) - 1);
-	uv.y = clamp(uv.y, 0, int(viewHeight) - 1);
+	ivec2 uv = ivec2(myScreenPos.xy * vec2(viewWidth, viewHeight) * ALL_REFLECTIONS_SCALE_FLOAT);
+	uv.x = clamp(uv.x, 0, int(viewWidth * ALL_REFLECTIONS_SCALE) - 1);
+	uv.y = clamp(uv.y, 0, int(viewHeight * ALL_REFLECTIONS_SCALE) - 1);
 	color = texelFetch(colortex4, uv, 0);
 	#else
 	color = texture2D(colortex4, myScreenPos.xy);
